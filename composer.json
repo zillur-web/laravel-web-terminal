@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "authors": [
-        {"name": "Zillur Rahman", "email": "your@email.com"}
+        {"name": "Zillur Rahman", "email": "zillur.web@gmail.com"}
     ],
     "require": {
         "php": "^8.0 <=8.5",
