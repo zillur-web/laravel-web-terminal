@@ -1,13 +1,12 @@
 {
-    "name": "zillur/laravel-web-terminal",
-    "description": "Secure web-based Laravel Artisan terminal",
-    "keywords": ["laravel", "artisan", "terminal", "web-terminal"],
-    "license": "MIT",
+    "name": "zillur-web/laravel-web-terminal",
+    "description": "A secure web-based Laravel Artisan terminal to run selected commands from the browser",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Zillur Web",
-            "email": "zillur.web@gmail.com"
+            "name": "Zillur Rahman",
+            "email": "your@email.com"
         }
     ],
     "require": {
@@ -25,7 +24,5 @@
                 "Zillur\\WebTerminal\\WebTerminalServiceProvider"
             ]
         }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    }
 }

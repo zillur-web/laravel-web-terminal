@@ -25,7 +25,7 @@ whitelisting.
 Install via Composer:
 
 ``` bash
-composer require zillur/laravel-web-terminal
+composer require zillur-web/laravel-web-terminal
 ```
 
 ------------------------------------------------------------------------
