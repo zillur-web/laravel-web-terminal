@@ -10,13 +10,15 @@ whitelisting.
 
 ## ✨ Features
 
--   Run selected Artisan commands from browser
--   Command whitelist protection
--   Configurable route prefix
--   Configurable middleware
--   Publishable configuration file
--   Publishable views
--   Laravel auto-discovery support
+- Run selected Artisan commands from browser
+- Command whitelist protection
+- Configurable route prefix
+- Middleware protection (web + CSRF)
+- Optional secret token for security (login-free access)
+- Publishable configuration file and views
+- Laravel auto-discovery support
+- Compatible with Laravel 8 → 12
+- Compatible with PHP 8.0 → 8.5
 
 ------------------------------------------------------------------------
 
@@ -25,7 +27,7 @@ whitelisting.
 Install via Composer:
 
 ``` bash
-composer require zillur/laravel-web-terminal
+composer require zillur-web/laravel-web-terminal
 ```
 
 ------------------------------------------------------------------------
@@ -46,11 +48,21 @@ php artisan vendor:publish --tag=web-terminal-views
 
 ## 🚀 Usage
 
-After installation, visit:
+Visit /terminal route to access the terminal.
 
-    /terminal
+Optional secret token is required for access (login-free)
 
-(Default prefix is `terminal`, configurable in config file.)
+Token can be passed via query string or header (X-WEB-TERMINAL-TOKEN)
+
+Example: /terminal?token=laravel-web-terminal
+
+Or in JavaScript headers:
+``` bash
+headers: {
+    "X-WEB-TERMINAL-TOKEN": "laravel-web-terminal"
+}
+```
+
 
 ------------------------------------------------------------------------
 
@@ -83,10 +95,13 @@ Config file: `config/web-terminal.php`
 ``` php
 return [
 
+    // Route prefix
     'prefix' => 'terminal',
 
-    'middleware' => ['web', 'auth'],
+    // Middleware
+    'middleware' => ['web'],
 
+    // Allowed artisan commands
     'allowed_commands' => [
         'migrate',
         'cache:clear',
@@ -95,6 +110,9 @@ return [
         'queue:restart',
     ],
 
+    // Optional secret token for security (login-free access)
+    'access_token' => env('WEB_TERMINAL_TOKEN', 'laravel-web-terminal'),
+
 ];
 ```
 
@@ -102,8 +120,8 @@ return [
 
 ## 🖥 Requirements
 
--   PHP 8.0 → 8.5
--   Laravel 8 → 12
+- PHP 8.0 → 8.5
+- Laravel 8 → 12
 
 ------------------------------------------------------------------------
 
