@@ -1,58 +1,35 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Web Terminal</title>
-    <style>
-        body {
-            background: #000;
-            color: #0f0;
-            font-family: monospace;
-            padding: 20px;
-        }
-
-        input {
-            width: 100%;
-            background: black;
-            color: #0f0;
-            border: none;
-        }
-    </style>
+    <title>Laravel Web Terminal</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-
 <body>
+    <h1>Laravel Web Terminal</h1>
 
-    <h3>Laravel Web Terminal</h3>
-
-    <form id="terminalForm">
-        <input type="text" name="command" autofocus>
-    </form>
+    <input type="text" id="command" placeholder="Enter Artisan command">
+    <button onclick="runCommand()">Run</button>
 
     <pre id="output"></pre>
 
     <script>
-        document.getElementById('terminalForm')
-            .addEventListener('submit', function(e) {
-                e.preventDefault();
+        async function runCommand() {
+            const command = document.getElementById('command').value;
+            const token = "{{ config('web-terminal.access_token') }}";
 
-                fetch("{{ route('web-terminal.run') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            command: this.command.value
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        document.getElementById('output').innerText =
-                            data.output ?? data.error;
-                    });
+            const response = await fetch("{{ url(config('web-terminal.prefix')) }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    "X-WEB-TERMINAL-TOKEN": token
+                },
+                body: JSON.stringify({ command, token })
             });
+
+            const data = await response.json();
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        }
     </script>
-
 </body>
-
 </html>

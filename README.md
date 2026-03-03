@@ -2,21 +2,21 @@
 
 A secure web-based Artisan terminal for Laravel applications.
 
-Laravel Web Terminal allows you to run selected Artisan commands safely from your browser with a command whitelist and middleware protection.
+Laravel Web Terminal allows you to run selected Artisan commands
+directly from your browser with proper security and command
+whitelisting.
 
----
+------------------------------------------------------------------------
 
 ## ✨ Features
 
-- Run selected Artisan commands from browser
-- Command whitelist protection
-- Configurable route prefix
-- Configurable middleware
-- Publishable configuration file
-- Publishable views
-- Laravel auto-discovery support
-- Compatible with Laravel 8 → 12
-- Compatible with PHP 8.0 → 8.5
+-   Run selected Artisan commands from browser
+-   Command whitelist protection
+-   Configurable route prefix
+-   Configurable middleware
+-   Publishable configuration file
+-   Publishable views
+-   Laravel auto-discovery support
 
 ------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ Laravel Web Terminal allows you to run selected Artisan commands safely from you
 Install via Composer:
 
 ``` bash
-composer require zillur-web/laravel-web-terminal
+composer require zillur/laravel-web-terminal
 ```
 
 ------------------------------------------------------------------------

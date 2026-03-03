@@ -3,31 +3,50 @@
 namespace Zillur\WebTerminal\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 
 class TerminalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('web-terminal::index');
-    }
-
-    public function run(Request $request)
-    {
-        $command = trim($request->command);
-        $allowed = config('web-terminal.allowed_commands');
-
-        if (!in_array($command, $allowed)) {
-            return response()->json([
-                'error' => 'Command not allowed.'
-            ]);
+        // Token check (optional, login-free security)
+        $token = $request->query('token') ?? $request->header('X-WEB-TERMINAL-TOKEN');
+        if ($token !== config('web-terminal.access_token')) {
+            abort(403, 'Unauthorized');
         }
 
-        Artisan::call($command);
+        return view('web-terminal::index'); // Blade view
+    }
 
-        return response()->json([
-            'output' => Artisan::output()
-        ]);
+    public function execute(Request $request)
+    {
+        $token = $request->input('token') ?? $request->header('X-WEB-TERMINAL-TOKEN');
+        if ($token !== config('web-terminal.access_token')) {
+            abort(403, 'Unauthorized');
+        }
+
+        $command = $request->input('command');
+
+        // Only allow whitelisted commands
+        if (!in_array($command, config('web-terminal.allowed_commands'))) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Command not allowed.'
+            ], 403);
+        }
+
+        try {
+            Artisan::call($command);
+            $output = Artisan::output();
+            return response()->json([
+                'status' => 'success',
+                'output' => $output
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
